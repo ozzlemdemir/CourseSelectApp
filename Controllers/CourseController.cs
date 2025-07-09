@@ -1,3 +1,4 @@
+using BtkAkademi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BtkAkademi.Controllers
@@ -10,6 +11,12 @@ namespace BtkAkademi.Controllers
         }
         
         public IActionResult Apply()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]//Güvenlik için kullanılır, CSRF saldırılarına karşı koruma sağlar.
+        public IActionResult Apply([FromForm]Candidate model)
         {
             return View();
         }
