@@ -6,8 +6,9 @@ namespace BtkAkademi.Controllers
     public class CourseController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
+        {    
+            var model=Repository.Applications;
+            return View(model);
         }
         
         public IActionResult Apply()
@@ -15,12 +16,22 @@ namespace BtkAkademi.Controllers
             return View();
         }
         [HttpPost]
-        
+
         [ValidateAntiForgeryToken]//Güvenlik için kullanılır, CSRF saldırılarına karşı koruma sağlar.
-        public IActionResult Apply([FromForm]Candidate model)
-        { 
-            Repository.Add(model);
-            return View("Feedback", model);
+        public IActionResult Apply([FromForm] Candidate model)
+        {
+            if (Repository.Applications.Any(c => c.Email.Equals(model.Email)))
+            {
+                ModelState.AddModelError("", "There is already applications for you.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                Repository.Add(model);
+                return View("Feedback", model);
+            }
+            return View();
+           
         }
 
     }
