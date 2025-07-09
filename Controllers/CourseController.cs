@@ -15,10 +15,12 @@ namespace BtkAkademi.Controllers
             return View();
         }
         [HttpPost]
+        
         [ValidateAntiForgeryToken]//Güvenlik için kullanılır, CSRF saldırılarına karşı koruma sağlar.
         public IActionResult Apply([FromForm]Candidate model)
-        {
-            return View();
+        { 
+            Repository.Add(model);
+            return RedirectToAction("Index", "Home");
         }
 
     }
